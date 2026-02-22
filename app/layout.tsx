@@ -9,11 +9,35 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 
 export const metadata: Metadata = {
-  title: "ResumeAI - Professional AI Resume Builder",
+  title: "ResumeBuilder RB – AI Resume Builder | Professional ResumeAI",
   description:
-    "Generate a polished, professional resume in just a few clicks with our AI-powered resume builder.",
+    "ResumeBuilder RB helps you generate polished, professional resumes in minutes using AI. Try our free templates and AI-powered resume builder today!",
   icons: {
     icon: "/icons/favicon.ico",
+  },
+  openGraph: {
+    title: "ResumeBuilder RB – AI Resume Builder",
+    description:
+      "Create professional resumes quickly with ResumeBuilder RB using AI-powered tools and free templates.",
+    url: "https://ai-resume-builder-vert.vercel.app/",
+    siteName: "ResumeBuilder RB",
+    images: [
+      {
+        url: "/icons/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ResumeBuilder RB – AI Resume Builder",
+      },
+    ],
+    locale: "en-US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ResumeBuilder RB – AI Resume Builder",
+    description:
+      "Create professional resumes quickly with ResumeBuilder RB using AI-powered tools and free templates.",
+    images: ["/icons/og-image.png"],
   },
 };
 
