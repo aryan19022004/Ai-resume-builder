@@ -114,13 +114,5 @@ Contributions are welcome! Here's how you can contribute:
 - Push to the branch (`git push origin feature/AmazingFeature`).
 - Open a pull request.
 
-## 📢 Notice
 
-As of February 2025, the website has exceeded its maximum user limit (500 users).
-To continue testing the project, please fork the repository, set up the required environment variables, and run it locally.
 
-## 📬 Contact
-
-Wanna reach out to me? DM me at 👇
-
-Email: mahmudul15-13791@diu.edu.bd
