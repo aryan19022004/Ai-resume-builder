@@ -108,7 +108,7 @@ const Page = () => {
       <section className="relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
-        
+
         <div className="relative py-12 px-6 mx-auto max-w-screen-xl lg:py-20 lg:px-12">
           {/* Announcement Badge */}
           <div className="flex justify-center animate-fade-in">
@@ -134,9 +134,9 @@ const Page = () => {
                 With AI Intelligence
               </span>
             </h1>
-            
+
             <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-              Effortlessly Craft a Professional Resume with Our AI-Powered Builder. 
+              Effortlessly Craft a Professional Resume with Our AI-Powered Builder.
               Join hundreds of successful job seekers.
             </p>
 
@@ -149,7 +149,7 @@ const Page = () => {
                 <span>Get Started Free</span>
                 <Rocket className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              
+
               <Link
                 href="#learn-more"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-gray-700 bg-white border-2 border-gray-200 rounded-2xl hover:border-indigo-300 hover:bg-indigo-50 transition-all duration-200"
@@ -339,7 +339,7 @@ const Page = () => {
         <div className="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-3xl p-12 lg:p-16 text-center text-white">
           {/* Animated background */}
           <div className="absolute inset-0 bg-grid-white/[0.1] bg-[size:30px_30px]" />
-          
+
           <div className="relative z-10">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
               Ready to Build Your Dream Resume?
@@ -347,7 +347,7 @@ const Page = () => {
             <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
               Join thousands of job seekers who've successfully landed interviews with our AI-powered platform
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href={`${!user?.isSignedIn ? "/sign-up" : "/dashboard"}`}
@@ -357,7 +357,7 @@ const Page = () => {
                 Get Started For Free
               </Link>
             </div>
-            
+
             <div className="flex items-center justify-center gap-4 mt-8 text-sm opacity-90">
               <span className="flex items-center">
                 <CheckCircle className="w-4 h-4 mr-1" />
@@ -469,8 +469,8 @@ const Page = () => {
               </span>
               <div className="text-sm text-gray-500">
                 <span className="inline-flex items-center">
-                  <Heart className="h-4 w-4 mr-1 text-pink-500" />
-                  Crafted by <span className="text-indigo-400 font-medium ml-1">Aryan & The Team</span>
+                  <Sparkles className="h-4 w-4 mr-1 text-indigo-400" />
+                  Created by <span className="text-indigo-400 font-medium ml-1">Aryan & The Team</span>
                 </span>
               </div>
             </div>
