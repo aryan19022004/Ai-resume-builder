@@ -167,7 +167,7 @@ const Page = () => {
                     <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-400 border-2 border-white" />
                   ))}
                 </div>
-                <span>1k+ users</span>
+                <span>100+ users</span>
               </div>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
