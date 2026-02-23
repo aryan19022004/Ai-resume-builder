@@ -470,7 +470,7 @@ const Page = () => {
               <div className="text-sm text-gray-500">
                 <span className="inline-flex items-center">
                   <Sparkles className="h-4 w-4 mr-1 text-indigo-400" />
-                  Created by <span className="text-indigo-400 font-medium ml-1">Aryan & The Team</span>
+                  Powered by <span className="text-indigo-400 font-medium ml-1">Aryan & The Team</span>
                 </span>
               </div>
             </div>
