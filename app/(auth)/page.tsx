@@ -465,7 +465,7 @@ const Page = () => {
           <div className="mt-16 pt-8 border-t border-gray-800">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <span className="text-sm text-gray-500">
-                © 2024 <span className="text-indigo-400 font-medium">ResumeAI</span>. All Rights Reserved.
+                © 2024 <span className="text-indigo-400 font-medium">ResumeBuilder</span>. All Rights Reserved.
               </span>
               <div className="text-sm text-gray-500">
                 <span className="inline-flex items-center">
