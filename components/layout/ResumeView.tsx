@@ -49,9 +49,9 @@ const FinalResumeView: React.FC<FinalResumeViewProps> = ({
           formData?.jobTitle ?? ""
         }_Resume.pdf`
       )}`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      image: { type: "jpeg", quality: 1.0 },
+      html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
 
     if (element) {

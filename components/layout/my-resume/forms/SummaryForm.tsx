@@ -3,11 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { generateSummary } from "@/lib/actions/gemini.actions";
 import { updateResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
 import { Brain, Loader2 } from "lucide-react";
 import React, { useRef, useState, useEffect } from "react";
+import AIGeneratorModal from "@/components/ui/AIGeneratorModal";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,10 +26,6 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
   const { formData, handleInputChange } = useFormContext();
   const [summary, setSummary] = useState(formData?.summary || "");
   const [isLoading, setIsLoading] = useState(false);
-  const [isAiLoading, setIsAiLoading] = useState(false);
-  const [aiGeneratedSummaryList, setAiGeneratedSummaryList] = useState<any[]>(
-    []
-  );
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof SummaryValidationSchema>>({
@@ -55,19 +51,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
     });
   };
 
-  const generateSummaryFromAI = async () => {
-    setIsAiLoading(true);
-    const result = await generateSummary(formData?.jobTitle);
-    setAiGeneratedSummaryList(result);
-    setIsAiLoading(false);
 
-    setTimeout(() => {
-      listRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  };
 
   const onSave = async (data: z.infer<typeof SummaryValidationSchema>) => {
     setIsLoading(true);
@@ -112,21 +96,24 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                     <FormLabel className="text-slate-700 font-semibold text-md">
                       Summary:
                     </FormLabel>
-                    <Button
-                      variant="outline"
-                      onClick={generateSummaryFromAI}
-                      type="button"
-                      size="sm"
-                      className="border-primary text-primary flex gap-2"
-                      disabled={isAiLoading}
-                    >
-                      {isAiLoading ? (
-                        <Loader2 size={16} className="animate-spin" />
-                      ) : (
-                        <Brain className="h-4 w-4" />
-                      )}{" "}
-                      Generate from AI
-                    </Button>
+                    <AIGeneratorModal 
+                      sectionType="Summary"
+                      defaultRole={formData?.jobTitle || ""}
+                      onApply={(content) => {
+                        form.setValue("summary", content, { shouldValidate: true });
+                        handleSummaryChange({ target: { name: "summary", value: content } });
+                      }}
+                      trigger={
+                        <Button
+                          variant="outline"
+                          type="button"
+                          size="sm"
+                          className="border-primary text-primary flex gap-2"
+                        >
+                          <Brain className="h-4 w-4" /> Generate from AI
+                        </Button>
+                      }
+                    />
                   </div>
                   <FormControl>
                     <Textarea
@@ -163,30 +150,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
         </Form>
       </div>
 
-      {aiGeneratedSummaryList.length > 0 && (
-        <div className="my-5" ref={listRef}>
-          <h2 className="font-bold text-lg">Suggestions</h2>
-          {aiGeneratedSummaryList?.map((item: any, index: number) => (
-            <div
-              key={index}
-              onClick={() =>
-                handleSummaryChange({
-                  target: { name: "summary", value: item?.summary },
-                })
-              }
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 ${
-                isAiLoading ? "cursor-not-allowed" : "cursor-pointer"
-              }`}
-              aria-disabled={isAiLoading}
-            >
-              <h2 className="font-semibold my-1 text-primary text-gray-800">
-                Level: {item?.experience_level}
-              </h2>
-              <p className="text-justify text-gray-600">{item?.summary}</p>
-            </div>
-          ))}
-        </div>
-      )}
+
     </div>
   );
 };

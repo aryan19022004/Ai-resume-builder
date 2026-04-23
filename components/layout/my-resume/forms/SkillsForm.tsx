@@ -6,9 +6,10 @@ import { useFormContext } from "@/lib/context/FormProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Rating } from "@smastrom/react-rating";
-import { Loader2, Minus, Plus } from "lucide-react";
+import { Loader2, Minus, Plus, Brain } from "lucide-react";
 import "@smastrom/react-rating/style.css";
 import { addSkillToResume } from "@/lib/actions/resume.actions";
+import AIGeneratorModal from "@/components/ui/AIGeneratorModal";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Form,
@@ -106,12 +107,31 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-primary-700 border-t-4 bg-white">
-      <h2 className="text-lg font-semibold leading-none tracking-tight">
-        Skill Sets
-      </h2>
-      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-        Add your top professional key skills
-      </p>
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h2 className="text-lg font-semibold leading-none tracking-tight">
+            Skill Sets
+          </h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Add your top professional key skills
+          </p>
+        </div>
+        <AIGeneratorModal
+          sectionType="Skills"
+          defaultRole={formData?.jobTitle || ""}
+          onApply={(content) => {
+            const parsedSkills = content.split(',').map(s => s.trim()).filter(Boolean);
+            const newSkills = parsedSkills.map(name => ({ name, rating: 5 }));
+            form.setValue("skills", newSkills, { shouldValidate: true });
+            handleInputChange({ target: { name: "skills", value: newSkills } });
+          }}
+          trigger={
+            <Button variant="outline" type="button" size="sm" className="border-primary text-primary flex gap-2">
+              <Brain className="h-4 w-4" /> Suggest Skills
+            </Button>
+          }
+        />
+      </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSave)} className="mt-5">

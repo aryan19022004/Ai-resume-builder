@@ -11,6 +11,9 @@ import ExperienceForm from "./forms/ExperienceForm";
 import EducationForm from "./forms/EducationForm";
 import SkillsForm from "./forms/SkillsForm";
 import ThemeColor from "@/components/layout/ThemeColor";
+import TemplateSelector from "@/components/layout/TemplateSelector";
+import ATSChecker from "./ATSChecker";
+import JobOptimizer from "./JobOptimizer";
 import { useToast } from "@/components/ui/use-toast";
 import { useFormContext } from "@/lib/context/FormProvider";
 import {
@@ -38,8 +41,13 @@ const ResumeEditForm = ({
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex justify-between">
-        <ThemeColor params={params} />
+      <div className="flex justify-between flex-wrap gap-4">
+        <div className="flex gap-2 items-center flex-wrap">
+          <TemplateSelector params={params} />
+          <ThemeColor params={params} />
+          <ATSChecker />
+          <JobOptimizer />
+        </div>
         <div className="flex gap-2">
           {activeFormIndex > 1 && (
             <Button

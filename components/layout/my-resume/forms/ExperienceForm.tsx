@@ -4,11 +4,11 @@ import RichTextEditor from "@/components/common/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { generateExperienceDescription } from "@/lib/actions/gemini.actions";
 import { addExperienceToResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
 import { Brain, Loader2, Minus, Plus } from "lucide-react";
 import React, { useRef, useState } from "react";
+import AIGeneratorModal from "@/components/ui/AIGeneratorModal";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -27,11 +27,6 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
   const listRef = useRef<HTMLDivElement>(null);
   const { formData, handleInputChange } = useFormContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [isAiLoading, setIsLoadingAi] = useState(false);
-  const [aiGeneratedSummaryList, setAiGeneratedSummaryList] = useState<any[]>(
-    []
-  );
-  const [currentAiIndex, setCurrentAiIndex] = useState(0);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof ExperienceValidationSchema>>({
@@ -100,9 +95,6 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
   const RemoveExperience = (index: number) => {
     remove(index);
     const newEntries = form.getValues("experience");
-    if (currentAiIndex >= newEntries.length) {
-      setCurrentAiIndex(newEntries.length - 1 >= 0 ? newEntries.length - 1 : 0);
-    }
     handleInputChange({
       target: {
         name: "experience",
@@ -111,35 +103,7 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
     });
   };
 
-  const generateExperienceDescriptionFromAI = async (index: number) => {
-    const experience = form.getValues("experience")[index];
-    if (!experience.title || !experience.companyName) {
-      toast({
-        title: "Uh Oh! Something went wrong.",
-        description:
-          "Please enter the position title and company name to generate summary.",
-        variant: "destructive",
-        className: "bg-white border-2",
-      });
-      return;
-    }
 
-    setCurrentAiIndex(index);
-    setIsLoadingAi(true);
-
-    const result = await generateExperienceDescription(
-      `${experience.title} at ${experience.companyName}`
-    );
-    setAiGeneratedSummaryList(result);
-    setIsLoadingAi(false);
-
-    setTimeout(() => {
-      listRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  };
 
   const onSave = async (data: z.infer<typeof ExperienceValidationSchema>) => {
     setIsLoading(true);
@@ -197,23 +161,24 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
                             <FormLabel className="text-slate-700 font-semibold text-md">
                               {config.label}:
                             </FormLabel>
-                            <Button
-                              variant="outline"
-                              onClick={() =>
-                                generateExperienceDescriptionFromAI(index)
+                            <AIGeneratorModal 
+                              sectionType="Experience"
+                              defaultRole={form.getValues(`experience.${index}.title`) || ""}
+                              onApply={(content) => {
+                                form.setValue(`experience.${index}.workSummary`, content, { shouldValidate: true });
+                                handleChange(index, { target: { name: "workSummary", value: content } as any });
+                              }}
+                              trigger={
+                                <Button
+                                  variant="outline"
+                                  type="button"
+                                  size="sm"
+                                  className="border-primary text-primary flex gap-2"
+                                >
+                                  <Brain className="h-4 w-4" /> Generate from AI
+                                </Button>
                               }
-                              type="button"
-                              size="sm"
-                              className="border-primary text-primary flex gap-2"
-                              disabled={isAiLoading}
-                            >
-                              {isAiLoading && currentAiIndex === index ? (
-                                <Loader2 size={16} className="animate-spin" />
-                              ) : (
-                                <Brain className="h-4 w-4" />
-                              )}{" "}
-                              Generate from AI
-                            </Button>
+                            />
                           </div>
                         ) : (
                           <FormLabel className="text-slate-700 font-semibold text-md">
@@ -292,38 +257,7 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
         </Form>
       </div>
 
-      {aiGeneratedSummaryList.length > 0 && (
-        <div className="my-5" ref={listRef}>
-          <h2 className="font-bold text-lg">Suggestions</h2>
-          {aiGeneratedSummaryList?.map((item: any, index: number) => (
-            <div
-              key={index}
-              onClick={() => {
-                form.setValue(
-                  `experience.${currentAiIndex}.workSummary`,
-                  item?.description,
-                  { shouldValidate: true }
-                );
-                handleInputChange({
-                  target: {
-                    name: "experience",
-                    value: form.getValues("experience"),
-                  },
-                });
-              }}
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 ${
-                isAiLoading ? "cursor-not-allowed" : "cursor-pointer"
-              }`}
-              aria-disabled={isAiLoading}
-            >
-              <h2 className="font-semibold my-1 text-primary text-gray-800">
-                Level: {item?.activity_level}
-              </h2>
-              <p className="text-justify text-gray-600">{item?.description}</p>
-            </div>
-          ))}
-        </div>
-      )}
+
     </div>
   );
 };
